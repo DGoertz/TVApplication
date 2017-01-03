@@ -7,14 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		880B98F21E1BCDA10002222A /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880B98F11E1BCDA10002222A /* Line.swift */; };
 		8894B6451E0DD39C00F1A97B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8894B6441E0DD39C00F1A97B /* AppDelegate.swift */; };
 		8894B6471E0DD39C00F1A97B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8894B6461E0DD39C00F1A97B /* ViewController.swift */; };
 		8894B64A1E0DD39C00F1A97B /* TVApplication.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8894B6481E0DD39C00F1A97B /* TVApplication.xcdatamodeld */; };
 		8894B64D1E0DD39C00F1A97B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8894B64B1E0DD39C00F1A97B /* Main.storyboard */; };
 		8894B64F1E0DD39C00F1A97B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8894B64E1E0DD39C00F1A97B /* Assets.xcassets */; };
+		88E4E1EF1E14110500D9C4D5 /* BaseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E4E1EE1E14110500D9C4D5 /* BaseEntity.swift */; };
+		88E4E1F11E14111400D9C4D5 /* Double_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E4E1F01E14111400D9C4D5 /* Double_Extension.swift */; };
+		88E4E1F31E14111F00D9C4D5 /* EntityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E4E1F21E14111F00D9C4D5 /* EntityManager.swift */; };
+		88E4E1F51E14112A00D9C4D5 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E4E1F41E14112A00D9C4D5 /* Goal.swift */; };
+		88E4E1F71E14113200D9C4D5 /* MessageDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E4E1F61E14113200D9C4D5 /* MessageDispatcher.swift */; };
+		88E4E1F91E14113B00D9C4D5 /* Telegram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E4E1F81E14113B00D9C4D5 /* Telegram.swift */; };
+		88E4E1FB1E14114400D9C4D5 /* Vector2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E4E1FA1E14114400D9C4D5 /* Vector2D.swift */; };
+		88E4E1FD1E14198300D9C4D5 /* OrderedTelegram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E4E1FC1E14198300D9C4D5 /* OrderedTelegram.swift */; };
+		88E4E2061E158EB900D9C4D5 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E4E2051E158EB900D9C4D5 /* Stack.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		880B98F11E1BCDA10002222A /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		8894B6411E0DD39C00F1A97B /* TVApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TVApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8894B6441E0DD39C00F1A97B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8894B6461E0DD39C00F1A97B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +33,16 @@
 		8894B64C1E0DD39C00F1A97B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8894B64E1E0DD39C00F1A97B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8894B6501E0DD39C00F1A97B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		88E4E1EE1E14110500D9C4D5 /* BaseEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseEntity.swift; sourceTree = "<group>"; };
+		88E4E1F01E14111400D9C4D5 /* Double_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double_Extension.swift; sourceTree = "<group>"; };
+		88E4E1F21E14111F00D9C4D5 /* EntityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityManager.swift; sourceTree = "<group>"; };
+		88E4E1F41E14112A00D9C4D5 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
+		88E4E1F61E14113200D9C4D5 /* MessageDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDispatcher.swift; sourceTree = "<group>"; };
+		88E4E1F81E14113B00D9C4D5 /* Telegram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Telegram.swift; sourceTree = "<group>"; };
+		88E4E1FA1E14114400D9C4D5 /* Vector2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector2D.swift; sourceTree = "<group>"; };
+		88E4E1FC1E14198300D9C4D5 /* OrderedTelegram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedTelegram.swift; sourceTree = "<group>"; };
+		88E4E1FF1E153F4D00D9C4D5 /* TestItOut.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = TestItOut.playground; sourceTree = "<group>"; };
+		88E4E2051E158EB900D9C4D5 /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +59,7 @@
 		8894B6381E0DD39C00F1A97B = {
 			isa = PBXGroup;
 			children = (
+				88E4E1FE1E153F3300D9C4D5 /* Playgroudn Region */,
 				8894B6431E0DD39C00F1A97B /* TVApplication */,
 				8894B6421E0DD39C00F1A97B /* Products */,
 			);
@@ -54,6 +76,10 @@
 		8894B6431E0DD39C00F1A97B /* TVApplication */ = {
 			isa = PBXGroup;
 			children = (
+				88E4E1F01E14111400D9C4D5 /* Double_Extension.swift */,
+				88E4E1FA1E14114400D9C4D5 /* Vector2D.swift */,
+				880B98F11E1BCDA10002222A /* Line.swift */,
+				88E4E1ED1E1410F000D9C4D5 /* AI Classes */,
 				8894B6441E0DD39C00F1A97B /* AppDelegate.swift */,
 				8894B6461E0DD39C00F1A97B /* ViewController.swift */,
 				8894B64B1E0DD39C00F1A97B /* Main.storyboard */,
@@ -62,6 +88,52 @@
 				8894B6481E0DD39C00F1A97B /* TVApplication.xcdatamodeld */,
 			);
 			path = TVApplication;
+			sourceTree = "<group>";
+		};
+		88E4E1ED1E1410F000D9C4D5 /* AI Classes */ = {
+			isa = PBXGroup;
+			children = (
+				88E4E2021E1546DD00D9C4D5 /* Goals */,
+				88E4E2011E1546AB00D9C4D5 /* Entities */,
+				88E4E2001E15465B00D9C4D5 /* Messaging */,
+			);
+			name = "AI Classes";
+			sourceTree = "<group>";
+		};
+		88E4E1FE1E153F3300D9C4D5 /* Playgroudn Region */ = {
+			isa = PBXGroup;
+			children = (
+				88E4E1FF1E153F4D00D9C4D5 /* TestItOut.playground */,
+			);
+			name = "Playgroudn Region";
+			sourceTree = "<group>";
+		};
+		88E4E2001E15465B00D9C4D5 /* Messaging */ = {
+			isa = PBXGroup;
+			children = (
+				88E4E1FC1E14198300D9C4D5 /* OrderedTelegram.swift */,
+				88E4E1F81E14113B00D9C4D5 /* Telegram.swift */,
+				88E4E1F61E14113200D9C4D5 /* MessageDispatcher.swift */,
+			);
+			name = Messaging;
+			sourceTree = "<group>";
+		};
+		88E4E2011E1546AB00D9C4D5 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				88E4E1F21E14111F00D9C4D5 /* EntityManager.swift */,
+				88E4E1EE1E14110500D9C4D5 /* BaseEntity.swift */,
+			);
+			name = Entities;
+			sourceTree = "<group>";
+		};
+		88E4E2021E1546DD00D9C4D5 /* Goals */ = {
+			isa = PBXGroup;
+			children = (
+				88E4E1F41E14112A00D9C4D5 /* Goal.swift */,
+				88E4E2051E158EB900D9C4D5 /* Stack.swift */,
+			);
+			name = Goals;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,7 +210,17 @@
 			files = (
 				8894B6471E0DD39C00F1A97B /* ViewController.swift in Sources */,
 				8894B6451E0DD39C00F1A97B /* AppDelegate.swift in Sources */,
+				88E4E1F31E14111F00D9C4D5 /* EntityManager.swift in Sources */,
+				88E4E1FD1E14198300D9C4D5 /* OrderedTelegram.swift in Sources */,
+				88E4E2061E158EB900D9C4D5 /* Stack.swift in Sources */,
 				8894B64A1E0DD39C00F1A97B /* TVApplication.xcdatamodeld in Sources */,
+				88E4E1FB1E14114400D9C4D5 /* Vector2D.swift in Sources */,
+				880B98F21E1BCDA10002222A /* Line.swift in Sources */,
+				88E4E1EF1E14110500D9C4D5 /* BaseEntity.swift in Sources */,
+				88E4E1F91E14113B00D9C4D5 /* Telegram.swift in Sources */,
+				88E4E1F11E14111400D9C4D5 /* Double_Extension.swift in Sources */,
+				88E4E1F71E14113200D9C4D5 /* MessageDispatcher.swift in Sources */,
+				88E4E1F51E14112A00D9C4D5 /* Goal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,6 +376,7 @@
 				8894B6551E0DD39C00F1A97B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
