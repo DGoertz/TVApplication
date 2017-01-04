@@ -1,5 +1,6 @@
 import Foundation
 import QuartzCore
+import UIKit
 
 struct Line: CustomStringConvertible, CustomDebugStringConvertible
 {
@@ -27,42 +28,17 @@ struct Line: CustomStringConvertible, CustomDebugStringConvertible
         return "(\(self.startPoint.x), \(self.startPoint.y)) -- (\(self.endPoint.x), \(self.endPoint.y))"
     }
     
-    // Line equations must cross but also be within the interval of the ray.
-    static func doesSideIntersectRay(side: Line, ray: Line) -> Bool
-    {
-        // Calculate first equation: y1 = m1 X x1 + b1
-        let m1: CGFloat = (side.endPoint.y - side.startPoint.y) / (side.endPoint.x - side.startPoint.x)
-        // Calculate b-intersept for first equation: b1 = y1 - (m1 X x1)
-        let b1: CGFloat = side.startPoint.y - (m1 * side.startPoint.x)
-        
-        // Calculate second equation: y2 = m2 X x2 + b2
-        let m2: CGFloat = (ray.endPoint.y - ray.startPoint.y) / (ray.endPoint.x - ray.startPoint.x)
-        // Calculate b-intersept for second equation: b2 = y2 - (m2 X x2)
-        let b2: CGFloat = ray.startPoint.y - (m2 * ray.startPoint.x)
-        
-        let y = ((m2 * b1) - (m1 * b2)) / (m2 - m1)
-        let x = y - b1
-        if x.isNormal && y.isNormal
-        {
-            if x < ray.startPoint.x || x > ray.endPoint.x
-            {
-                return false
-            }
-            print("Line 1: \(side) & Line 2: \(ray) intersect!")
-            return true
-        }
-        return false
-    }
-    
     // Ray begins to the left of the bounding box and extends to just right
-    // of the point.
-    static func calcMinRay(fromPoint point: CGPoint, andPolygon polygon: [CGPoint]) -> Line
+    // of the click-point.
+    static func calcMinRay(fromClickPoint point: CGPoint, andPolygon polygon: [CGPoint]) -> Line
     {
+        let tollerance: CGFloat = CGFloat.leastNormalMagnitude
         let startX = polygon.reduce(CGFloat.greatestFiniteMagnitude, { min($0,$1.x) })
-        let startPoint: CGPoint = CGPoint(x: startX - CGFloat.leastNormalMagnitude, y: point.y)
-        let endX: CGFloat = point.x + CGFloat.leastNormalMagnitude
+        let startPoint: CGPoint = CGPoint(x: startX - tollerance, y: point.y)
+        let endX: CGFloat = point.x + tollerance
         let endPoint: CGPoint = CGPoint(x: endX, y: point.y)
-        return Line(startPoint: startPoint, endPoint: endPoint)
+        let retVal = Line(startPoint: startPoint, endPoint: endPoint)
+        return retVal
     }
     
     // Produce an array of Lines that represent the sides of the polygon.an
@@ -113,13 +89,16 @@ struct Line: CustomStringConvertible, CustomDebugStringConvertible
         return (minX, maxX, minY, maxY)
     }
     
+    // Point is inside if a ray beginning just to the left of the polygon
+    // and extending to just right of the point itself, intersects the sides
+    // of the polygon an odd number of times.
     static func isPointInside(point: CGPoint, poly: [ CGPoint ]) -> Bool
     {
         if Line.isPointInBoundingBox(point: point, inPolygon: poly) == false
         {
             return false
         }
-        let minRay: Line = Line.calcMinRay(fromPoint: point, andPolygon: poly)
+        let minRay: Line = Line.calcMinRay(fromClickPoint: point, andPolygon: poly)
         let sides: [ Line ] = Line.getSides(ofPolygon: poly)
         var collisions: Int = 0
         for side in sides
@@ -131,6 +110,56 @@ struct Line: CustomStringConvertible, CustomDebugStringConvertible
         }
         if (collisions % 2) > 0
         {
+            return true
+        }
+        return false
+    }
+    
+    static func doesSideIntersectRay(side: Line, ray: Line) -> Bool
+    {
+        // A1x + B1y + C1 = 0
+        let A1 = side.startPoint.y - side.endPoint.y
+        let B1 = side.startPoint.x - side.endPoint.x
+        let v1: Vector2D = Vector2D(x: side.startPoint.x, y: side.startPoint.y)
+        let v2: Vector2D = Vector2D(x: side.endPoint.x, y: side.endPoint.y)
+        let C1 = v1.cross(with: v2)
+        
+        // A2x + B2y + C2 = 0
+        let A2 = ray.startPoint.y - ray.endPoint.y
+        let B2 = ray.startPoint.x - ray.endPoint.x
+        let v3: Vector2D = Vector2D(x: ray.startPoint.x, y: ray.startPoint.y)
+        let v4: Vector2D = Vector2D(x: ray.endPoint.x, y: ray.endPoint.y)
+        let C2 = v3.cross(with: v4)
+        
+        // Solve simultaneous equations using Crammer's Rule.
+        
+        // A1  B1  C1
+        // A2  B2  C2
+        
+        // det |A1  B1|
+        //     |A2  B2|
+        
+        let det = (A1 * B2) - (B1 * A2)
+        
+        // detX |C1  B1|
+        //      |C2  B2|
+        
+        let detX = (C1 * B2) - (B1 * C2)
+        
+        // detY |A1  C1|
+        //      |A2  C2|
+        
+        let detY = ((A1 * C2) - (C1 * A2))
+        
+        let xSolution = detX / det
+        let ySolution = detY / det
+        
+        if xSolution.isNormal && ySolution.isNormal
+        {
+            if (xSolution < ray.startPoint.x || xSolution > ray.endPoint.x)
+            {
+                return false
+            }
             return true
         }
         return false
