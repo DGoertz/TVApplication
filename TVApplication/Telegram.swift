@@ -66,12 +66,12 @@ struct Telegram : Hashable
 {
     // MARK: Properties.
     
-    var sender: Int64
-    var receiver: Int64
+    var sender: String
+    var receiver: String
     var message: MessageLibrary
     var dispatchTime: TimeInterval
     
-    init(sender: Int64, receiver: Int64, message: MessageLibrary, dispatchTime: TimeInterval)
+    init(sender: String, receiver: String, message: MessageLibrary, dispatchTime: TimeInterval)
     {
         self.sender = sender
         self.receiver = receiver
@@ -90,7 +90,7 @@ struct Telegram : Hashable
     }
     
     // MARK: Hashable conformance.
-    public var hashValue: Int {  return Int(((sender & 0xFF) << 16) + ((receiver  & 0xFF) << 8) + (message.rawValue  & 0xFF)) }
+    public var hashValue: Int { return (sender.hash & 0xFFFFFFFF << 32) & (receiver.hash & 0xFFFFFFFF) }
     
     // MARK: Equitable conformance.
     public static func ==(lhs: Telegram, rhs: Telegram) -> Bool
@@ -103,3 +103,4 @@ struct Telegram : Hashable
         )
     }
 }
+

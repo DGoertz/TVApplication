@@ -1,30 +1,35 @@
 import Foundation
 
-enum EntitieTypes : Int64
+enum EntityType
 {
-    case Man    = 0x0000000000000001
-    case Dog    = 0x0000000000000002
-    case Sheep  = 0x0000000000000003
-    case Coyote = 0x0000000000000004
+    case Man
+    case Dog
+    case Sheep
+    case Coyote
 }
 
 class BaseEntity
 {
-    var ID: Int64
+    var ID:        String
+    var type:      EntityType
     var hitPoints: Int
     
-    init(id: EntitieTypes)
+    init(id: EntityType)
     {
-        self.ID = id.rawValue
+        self.ID = UUID().uuidString
         switch id
         {
         case .Man:
+            type = .Man
             hitPoints = 100
         case .Dog:
+            type = .Dog
             hitPoints = 150
         case .Sheep:
+            type = .Sheep
             hitPoints = 50
         case .Coyote:
+            type = .Coyote
             hitPoints = 200
         }
     }
@@ -37,7 +42,7 @@ class BaseEntity
     
     func handle(message: Telegram) -> HandleState
     {
-        print("Mthod handle:message: must be overridden!")
+        print("Method handle:message: must be overridden!")
         return .notHandled
     }
     

@@ -4,11 +4,11 @@ class EntityManager
 {
     static let sharedInstance: EntityManager = EntityManager()
 
-    var entites: [ Int64 : BaseEntity ]!
+    var entites: [ String : BaseEntity ]!
     
     private init()
     {
-        self.entites = [ Int64 : BaseEntity ]()
+        self.entites = [ String : BaseEntity ]()
     }
     
     func register(entity: BaseEntity) -> Void
@@ -22,7 +22,7 @@ class EntityManager
         entites[entity.ID] = entity
     }
     
-    func getEntity(fromID: Int64) -> BaseEntity?
+    func getEntity(fromID: String) -> BaseEntity?
     {
         return entites[fromID]
     }

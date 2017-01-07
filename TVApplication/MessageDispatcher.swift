@@ -17,7 +17,7 @@ class MessageDispatcher
         delayedMessages = OrderedTelegram()
     }
     
-    static func obtainReceiver(fromId: Int64) -> BaseEntity?
+    static func obtainReceiver(fromId: String) -> BaseEntity?
     {
         guard let receiverEntity = EntityManager.sharedInstance.getEntity(fromID: fromId)
             else
@@ -28,7 +28,7 @@ class MessageDispatcher
         return receiverEntity
     }
     
-    func DispatchMessage(delay: TimeInterval, sender: Int64, receiver: Int64, message: MessageLibrary, userInfo: [ String : AnyObject ]) -> Void
+    func DispatchMessage(delay: TimeInterval, sender: String, receiver: String, message: MessageLibrary, userInfo: [ String : AnyObject ]) -> Void
     {
         guard let recEntity = MessageDispatcher.obtainReceiver(fromId: receiver)
         else

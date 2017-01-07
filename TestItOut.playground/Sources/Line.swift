@@ -111,7 +111,6 @@ public struct Line: CustomStringConvertible, CustomDebugStringConvertible
         }
         if (collisions % 2) > 0
         {
-            print("Collisions: \(collisions)")
             return true
         }
         return false

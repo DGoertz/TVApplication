@@ -10,7 +10,7 @@ import Foundation
 
 class OrderedTelegram
 {
-    static let MIN_TIMING_INSTANCE: TimeInterval = 0.0000000001
+    static let MIN_TIMING_INSTANCE: TimeInterval = Double.leastNormalMagnitude
     
     var backingItems: [ TimeInterval : Telegram ]
     

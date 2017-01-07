@@ -112,16 +112,19 @@ public struct Vector2D: CustomStringConvertible, CustomDebugStringConvertible
         return (self.dot(v2: v2) > 0)
     }
     
+    // Since the dot product is: v1 dot v2 = |v1| |v2| cos(theta)
     public func angleBetween(v2: Vector2D) -> CGFloat
     {
         return acos(self.dot(v2: v2) / (self.length * v2.length))
     }
     
+    // Actual formula is: |v1| |v2| sin(theta)
     public func cross(with v2: Vector2D) -> CGFloat
     {
         return (self.x * v2.y) - (v2.x * self.y)
     }
     
+    // If I'm to the left then that is a (-) angle and therefore sin() is (-).
     public func toLeft(of v2: Vector2D) -> Bool
     {
         return self.cross(with: v2) < 0
