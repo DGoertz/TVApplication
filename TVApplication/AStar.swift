@@ -181,7 +181,7 @@ class AStar
                         else
                         {
                             
-                            if let (foundOnClosedList, closedListIndex) = self.find(node: stillHasWalkableTiles[t], onList: self.closedList)
+                            if let (_, _) = self.find(node: stillHasWalkableTiles[t], onList: self.closedList)
                             {
                                 continue
                             }
