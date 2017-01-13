@@ -1,6 +1,6 @@
 import Foundation
 
-class Stack<T>
+public class Stack<T>
 {
     var stack: [T]
     
