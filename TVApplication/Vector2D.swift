@@ -87,6 +87,15 @@ struct Vector2D: CustomStringConvertible
         }
     }
     
+    func truncate(toMax: CGFloat) -> Vector2D?
+    {
+        if self.length > toMax
+        {
+            return Vector2D(x: (self.x / self.length) * toMax, y: (self.y / self.length) * toMax)
+        }
+        return nil
+    }
+    
     func reverse(of: Vector2D) -> Vector2D
     {
         return Vector2D(x: -1 * self.x, y: -1 * self.y)

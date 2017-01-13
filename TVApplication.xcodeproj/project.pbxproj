@@ -59,7 +59,7 @@
 		8894B6381E0DD39C00F1A97B = {
 			isa = PBXGroup;
 			children = (
-				88E4E1FE1E153F3300D9C4D5 /* Playgroudn Region */,
+				88E4E1FE1E153F3300D9C4D5 /* Playground Region */,
 				8894B6431E0DD39C00F1A97B /* TVApplication */,
 				8894B6421E0DD39C00F1A97B /* Products */,
 			);
@@ -100,12 +100,12 @@
 			name = "AI Classes";
 			sourceTree = "<group>";
 		};
-		88E4E1FE1E153F3300D9C4D5 /* Playgroudn Region */ = {
+		88E4E1FE1E153F3300D9C4D5 /* Playground Region */ = {
 			isa = PBXGroup;
 			children = (
 				88E4E1FF1E153F4D00D9C4D5 /* TestItOut.playground */,
 			);
-			name = "Playgroudn Region";
+			name = "Playground Region";
 			sourceTree = "<group>";
 		};
 		88E4E2001E15465B00D9C4D5 /* Messaging */ = {

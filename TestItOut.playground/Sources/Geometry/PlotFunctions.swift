@@ -18,6 +18,19 @@ public class PlotFunctions
         return colorDomain[dice]
     }
     
+    public static func createBlankImage(ofSize size: CGSize) -> UIImage?
+    {
+        UIGraphicsBeginImageContext(size)
+        if let context = UIGraphicsGetCurrentContext()
+        {
+            context.setBlendMode(.normal)
+            let result: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+            UIGraphicsEndImageContext()
+            return result
+        }
+        return nil
+    }
+    
     public static func plotVectors(size: CGSize, vects: [Vector2D]) -> UIImage?
     {
         UIGraphicsBeginImageContext(size)
@@ -77,8 +90,62 @@ public class PlotFunctions
             context.setStrokeColor(color.cgColor)
             for line in lines
             {
-                context.move(to: CGPoint(x: line.startPoint.x, y: line.startPoint.y))
-                context.addLine(to: CGPoint(x: line.endPoint.x, y: line.endPoint.y))
+                context.move(to: CGPoint(x: line.startPoint.x, y: size.height - line.startPoint.y))
+                context.addLine(to: CGPoint(x: line.endPoint.x, y: size.height - line.endPoint.y))
+                context.strokePath()
+            }
+            let result: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+            UIGraphicsEndImageContext()
+            return result
+        }
+        return nil
+    }
+    
+    public static func plotLines(OnImage image: UIImage, size: CGSize, lines: [Line], inColor color: UIColor) -> UIImage?
+    {
+        UIGraphicsBeginImageContext(size)
+        if let context = UIGraphicsGetCurrentContext()
+        {
+            let originalArea: CGRect = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
+            context.draw(image.cgImage!, in: originalArea)
+            context.setBlendMode(.normal)
+            context.setLineWidth(1)
+            context.setStrokeColor(color.cgColor)
+            for line in lines
+            {
+                context.move(to: CGPoint(x: line.startPoint.x, y: size.height - line.startPoint.y))
+                context.addLine(to: CGPoint(x: line.endPoint.x, y: size.height - line.endPoint.y))
+                context.strokePath()
+            }
+            let result: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+            UIGraphicsEndImageContext()
+            return result
+        }
+        return nil
+    }
+    
+    public static func plotPoints(OnImage image: UIImage, points: [ CGPoint ], inColor color: UIColor) -> UIImage?
+    {
+        let size = image.size
+        UIGraphicsBeginImageContext(size)
+        if let context = UIGraphicsGetCurrentContext()
+        {
+            let originalArea: CGRect = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
+            context.draw(image.cgImage!, in: originalArea)
+            context.setBlendMode(.normal)
+            context.setLineWidth(1)
+            context.setStrokeColor(color.cgColor)
+            for (index, point) in points.enumerated()
+            {
+                context.move(to: CGPoint(x: point.x, y: size.height - point.y))
+                if index + 1 < points.count
+                {
+                    context.addLine(to: CGPoint(x: points[index + 1].x, y: size.height - points[index + 1].y))
+                }
+                else
+                {
+                    context.addLine(to: CGPoint(x: points[0].x, y: size.height - points[0].y))
+                }
                 context.strokePath()
             }
             let result: UIImage = UIGraphicsGetImageFromCurrentImageContext()!

@@ -87,6 +87,15 @@ public struct Vector2D: CustomStringConvertible, CustomDebugStringConvertible
         }
     }
     
+    public func truncate(toMax: CGFloat) -> Vector2D?
+    {
+        if self.length > toMax
+        {
+            return Vector2D(x: (self.x / self.length) * toMax, y: (self.y / self.length) * toMax)
+        }
+        return nil
+    }
+    
     public func reverse(of: Vector2D) -> Vector2D
     {
         return Vector2D(x: -1 * self.x, y: -1 * self.y)
@@ -134,4 +143,48 @@ public struct Vector2D: CustomStringConvertible, CustomDebugStringConvertible
     {
         return self.cross(with: v2) > 0
     }
+    
+    // MARK: Overloaded operators.
+    
+    static func - (left: Vector2D, right: Vector2D) -> Vector2D
+    {
+        return Vector2D(x: left.x - right.x, y: left.y - right.y)
+    }
+    
+    static func - (left: Vector2D, scaler: CGFloat) -> Vector2D
+    {
+        return Vector2D(x: left.x - scaler, y: left.y - scaler)
+    }
+    
+    static func + (left: Vector2D, right: Vector2D) -> Vector2D
+    {
+        return Vector2D(x: left.x + right.x, y: left.y + right.y)
+    }
+    
+    static func + (left: Vector2D, scaler: CGFloat) -> Vector2D
+    {
+        return Vector2D(x: left.x + scaler, y: left.y + scaler)
+    }
+    
+    static func / (left: Vector2D, right: Vector2D) -> Vector2D
+    {
+        return Vector2D(x: left.x / right.x, y: left.y / right.y)
+    }
+    
+    static func / (left: Vector2D, scaler: CGFloat) -> Vector2D
+    {
+        return Vector2D(x: left.x / scaler, y: left.y / scaler)
+    }
+    
+    static func * (left: Vector2D, right: Vector2D) -> Vector2D
+    {
+        return Vector2D(x: left.x * right.x, y: left.y * right.y)
+    }
+    
+    static func * (left: Vector2D, scaler: CGFloat) -> Vector2D
+    {
+        return Vector2D(x: left.x * scaler, y: left.y * scaler)
+    }
 }
+
+
