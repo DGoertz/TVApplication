@@ -8,6 +8,9 @@ public class MovingEntity : BaseEntity
     public var maxVelocity:         CGFloat!
     public var maxForce:            CGFloat!
     public var maxTurnRate:         CGFloat!
+    public var wanderDistance:      CGFloat!
+    public var wanderRadius:        CGFloat!
+    public var wanderJitter:        CGFloat!
     
     var heading: Vector2D?
         {

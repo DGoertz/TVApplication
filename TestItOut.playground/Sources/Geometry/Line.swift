@@ -22,7 +22,6 @@ public struct Line: CustomStringConvertible, CustomDebugStringConvertible
     
     // MARK: Conformance to CustomStringConvertible.
     
-    
     public var description: String
     {
         return "(\(self.startPoint.x), \(self.startPoint.y)) -- (\(self.endPoint.x), \(self.endPoint.y))"
@@ -49,8 +48,8 @@ public struct Line: CustomStringConvertible, CustomDebugStringConvertible
         var sides: [ Line ] = [ Line ]()
         for (index, v) in polygon.enumerated()
         {
-            var first: CGPoint = CGPoint(x: 0, y: 0)
-            var second: CGPoint = CGPoint(x: 0, y: 0)
+            var first: CGPoint
+            var second: CGPoint
             if index + 1 < polygon.count
             {
                 first = v
@@ -79,6 +78,8 @@ public struct Line: CustomStringConvertible, CustomDebugStringConvertible
         return true
     }
     
+    // The ray is drawn from a given point to just-left of the left side of the polygon.
+    // The line is a side of the given polygon.
     public static func doesSideIntersectRay(side: Line, ray: Line) -> Bool
     {
         // A1x + B1y + C1 = 0

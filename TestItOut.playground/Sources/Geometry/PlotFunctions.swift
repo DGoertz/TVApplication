@@ -4,19 +4,7 @@ import QuartzCore
 
 public class PlotFunctions
 {
-    public static func getRandomColor(notThis: UIColor) -> UIColor
-    {
-        let colorDomain: [ UIColor ] = [
-            UIColor.brown, UIColor.black, UIColor.blue, UIColor.cyan, UIColor.darkGray, UIColor.gray, UIColor.green, UIColor.lightGray, UIColor.magenta, UIColor.orange, UIColor.purple, UIColor.red, UIColor.white, UIColor.yellow
-        ]
-        var dice: Int = 0
-        repeat
-        {
-            dice = Int(arc4random_uniform(UInt32(colorDomain.count)))
-        }
-            while colorDomain[dice] == notThis
-        return colorDomain[dice]
-    }
+    
     
     public static func createBlankImage(ofSize size: CGSize) -> UIImage?
     {
@@ -41,7 +29,7 @@ public class PlotFunctions
             var lastColor: UIColor = UIColor.brown
             for vect in vects
             {
-                let strokeColor: UIColor = getRandomColor(notThis: lastColor)
+                let strokeColor: UIColor = UIColor.getRandomColor(notThis: lastColor)
                 context.setStrokeColor(strokeColor.cgColor)
                 context.move(to: CGPoint(x: 0, y: size.height))
                 let correctedYCalc = size.height - vect.y
@@ -66,7 +54,7 @@ public class PlotFunctions
             var lastColor: UIColor = UIColor.brown
             for line in lines
             {
-                let strokeColor: UIColor = PlotFunctions.getRandomColor(notThis: lastColor)
+                let strokeColor: UIColor = UIColor.getRandomColor(notThis: lastColor)
                 context.setStrokeColor(strokeColor.cgColor)
                 context.move(to: CGPoint(x: line.startPoint.x, y: size.height - line.startPoint.y))
                 context.addLine(to: CGPoint(x: line.endPoint.x, y: size.height - line.endPoint.y))

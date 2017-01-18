@@ -87,13 +87,13 @@ public struct Vector2D: CustomStringConvertible, CustomDebugStringConvertible
         }
     }
     
-    public func truncate(toMax: CGFloat) -> Vector2D?
+    public func truncate(toMax: CGFloat) -> Vector2D
     {
         if self.length > toMax
         {
             return Vector2D(x: (self.x / self.length) * toMax, y: (self.y / self.length) * toMax)
         }
-        return nil
+        return self
     }
     
     public func reverse(of: Vector2D) -> Vector2D
@@ -182,6 +182,11 @@ public struct Vector2D: CustomStringConvertible, CustomDebugStringConvertible
     }
     
     static func * (left: Vector2D, scaler: CGFloat) -> Vector2D
+    {
+        return Vector2D(x: left.x * scaler, y: left.y * scaler)
+    }
+    
+    static func * (scaler: CGFloat, left: Vector2D) -> Vector2D
     {
         return Vector2D(x: left.x * scaler, y: left.y * scaler)
     }

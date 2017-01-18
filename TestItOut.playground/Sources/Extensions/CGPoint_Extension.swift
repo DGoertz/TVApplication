@@ -37,4 +37,14 @@ extension CGPoint
         }
         return false
     }
+    
+    public static func + (scaler: CGFloat, right: CGPoint) -> CGPoint
+    {
+        return CGPoint(x: scaler + right.x, y: scaler + right.y)
+    }
+    
+    public static func + (left: CGPoint, right: Vector2D) -> CGPoint
+    {
+        return CGPoint(x: left.x + right.x, y: left.y + right.y)
+    }
 }

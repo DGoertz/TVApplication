@@ -127,7 +127,13 @@ public class BaseEntity: CustomStringConvertible, CustomDebugStringConvertible
     
     public func render(onto image: UIImage) -> UIImage?
     {
-        print("Method render message must be overridden!")
-        return nil
+        let scaledPoints: [ CGPoint ] = self.getRenderablePolygon()
+        guard let image = PlotFunctions.plotPoints(OnImage: image, points: scaledPoints, inColor: UIColor.red)
+            else
+        {
+            print("Render failed!")
+            return nil
+        }
+        return image
     }
 }

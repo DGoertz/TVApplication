@@ -34,16 +34,4 @@ public class Dog: MovingEntity
     {
         return "\(super.debugDescription). I'm a Dog!"
     }
-    
-    public override func render(onto image: UIImage) -> UIImage?
-    {
-        let scaledPoints: [ CGPoint ] = self.getRenderablePolygon()
-        guard let image = PlotFunctions.plotPoints(OnImage: image, points: scaledPoints, inColor: UIColor.red)
-        else
-        {
-            print("Render failed!")
-            return nil
-        }
-        return image
-    }
 }

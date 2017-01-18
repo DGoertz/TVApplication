@@ -48,8 +48,8 @@ struct Line: CustomStringConvertible, CustomDebugStringConvertible
         var sides: [ Line ] = [ Line ]()
         for (index, v) in polygon.enumerated()
         {
-            var first: CGPoint = CGPoint(x: 0, y: 0)
-            var second: CGPoint = CGPoint(x: 0, y: 0)
+            var first: CGPoint
+            var second: CGPoint
             if index + 1 < polygon.count
             {
                 first = v
@@ -115,6 +115,8 @@ struct Line: CustomStringConvertible, CustomDebugStringConvertible
         return false
     }
     
+    // The ray is drawn from a given point to just-left of the left side of the polygon.
+    // The line is a side of the given polygon.
     static func doesSideIntersectRay(side: Line, ray: Line) -> Bool
     {
         // A1x + B1y + C1 = 0

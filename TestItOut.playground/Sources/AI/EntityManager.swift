@@ -4,7 +4,7 @@ public class EntityManager
 {
     public static let sharedInstance: EntityManager = EntityManager()
     
-    public var entites: [ String : BaseEntity ]!
+    var entites: [ String : BaseEntity ]!
     
     private init()
     {
@@ -20,6 +20,17 @@ public class EntityManager
             return
         }
         entites[entity.ID] = entity
+    }
+    
+    public func getKeys() -> [ String ]
+    {
+        var retKeys: [ String ] = [ String ]()
+        let ks = entites.keys
+        for k in ks
+        {
+            retKeys.append(k)
+        }
+        return retKeys
     }
     
     public func getEntity(fromID: String) -> BaseEntity?

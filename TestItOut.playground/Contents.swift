@@ -12,9 +12,9 @@ let size: CGSize = CGSize(width: 100, height: 100)
 PlaygroundPage.current.needsIndefiniteExecution = true
 if let backingImage: UIImage = PlotFunctions.createBlankImage(ofSize: size)
 {
-    for nextID in manager.entites.keys
+    for nextID in manager.getKeys()
     {
-        if let nextEntity = manager.entites[nextID]
+        if let nextEntity = manager.getEntity(fromID: nextID)
         {
             var image: UIImage? = nextEntity.render(onto: backingImage)
             let iView: UIImageView = UIImageView(image: image)
