@@ -19,7 +19,15 @@ class SteeringBehavior
     
     public func getWander() -> Vector2D?
     {
-        
+        let dice1: CGFloat = CGFloat(arc4random_uniform(2)) - 1
+        let dice2: CGFloat = CGFloat(arc4random_uniform(2)) - 1
+        let deltaX: CGFloat = dice1 * self.entity.wanderJitter
+        let deltaY: CGFloat = dice2 * self.entity.wanderJitter
+        let newTarget: Vector2D = Vector2D(x: self.entity.wanderTarget.x + deltaX, y: self.entity.wanderTarget.y + deltaY)
+        let targetOnCircle: CGPoint = CGPoint(x: newTarget.normal()!.x * self.entity.wanderRadius, y: newTarget.normal()!.y * self.entity.wanderRadius)
+        self.entity.wanderTarget = targetOnCircle
+        let newSpot: Vector2D = Vector2D(x: self.entity.wanderDistance + self.entity.wanderTarget.x, y: self.entity.wanderDistance + self.entity.wanderTarget.y)
+        return getSeek(toTarget: newSpot)
     }
     
     public func getEvade(toTarget target: MovingEntity) -> Vector2D?

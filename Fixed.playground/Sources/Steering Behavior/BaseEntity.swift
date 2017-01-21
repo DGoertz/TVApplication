@@ -62,7 +62,7 @@ public class BaseEntity: CustomStringConvertible, CustomDebugStringConvertible
 {
     public var ID:                  String
     public var type:                EntityType
-    public var position:            CGPoint
+    public var position:            CGPoint // In world coordinates.
     public var hitPoints:           CGFloat
     public var mass:                CGFloat
     public var renderPolygon:       [ CGPoint ]

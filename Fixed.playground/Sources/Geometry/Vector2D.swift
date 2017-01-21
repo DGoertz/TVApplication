@@ -191,5 +191,3 @@ public struct Vector2D: CustomStringConvertible, CustomDebugStringConvertible
         return Vector2D(x: left.x * scaler, y: left.y * scaler)
     }
 }
-
-

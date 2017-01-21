@@ -11,6 +11,7 @@ public class MovingEntity : BaseEntity
     public var wanderDistance:      CGFloat!
     public var wanderRadius:        CGFloat!
     public var wanderJitter:        CGFloat!
+    public var wanderTarget:        CGPoint!
     
     var heading: Vector2D?
         {
@@ -32,7 +33,7 @@ public class MovingEntity : BaseEntity
         }
     }
     
-    init(type: EntityType, position: CGPoint, hitPoints: CGFloat, mass: CGFloat, renderPoly: [ CGPoint ], scale: CGFloat, heading: Vector2D, velocity: Vector2D, maxVelocity: CGFloat, maxForce: CGFloat, maxTurnRate: CGFloat)
+    init(type: EntityType, position: CGPoint, hitPoints: CGFloat, mass: CGFloat, renderPoly: [ CGPoint ], scale: CGFloat, heading: Vector2D, velocity: Vector2D, maxVelocity: CGFloat, maxForce: CGFloat, maxTurnRate: CGFloat, wanderDistance: CGFloat, wanderRadius: CGFloat, wanderJitter: CGFloat)
     {
         super.init(type: type, position: position, hitPoints: hitPoints, mass: mass, renderPoly: renderPoly, scale: scale)
         self.heading = heading
@@ -40,6 +41,10 @@ public class MovingEntity : BaseEntity
         self.maxVelocity = maxVelocity
         self.maxForce = maxForce
         self.maxTurnRate = maxTurnRate
+        self.wanderDistance = wanderDistance
+        self.wanderRadius = wanderRadius
+        self.wanderJitter = wanderJitter
+        // Need to calculate the initial value for wanderTarget.
     }
 
 }

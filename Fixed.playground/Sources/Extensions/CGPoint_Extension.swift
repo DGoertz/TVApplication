@@ -3,6 +3,12 @@ import CoreGraphics
 
 extension CGPoint
 {
+    public init(fromVector vect: Vector2D)
+    {
+        self.x = vect.x
+        self.y = vect.y
+    }
+    
     public static func getBoundingBox(forPolygon polygon: [ CGPoint ]) -> (CGFloat, CGFloat, CGFloat, CGFloat)
     {
         let minX = polygon.reduce(CGFloat.greatestFiniteMagnitude, { min($0,$1.x) })

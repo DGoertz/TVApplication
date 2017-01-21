@@ -17,8 +17,7 @@ public class Dog: MovingEntity
         let p6: CGPoint = CGPoint(x: 3, y: 5)
         let p7: CGPoint = CGPoint(x: 2, y: 3)
         let polygon = [ p0, p1, p2, p3, p4, p5, p6, p7 ]
-        super.init(type: .Dog, position: CGPoint(x: 0, y: 0), hitPoints: 100, mass: 25, renderPoly: polygon, scale: 1, heading: Vector2D(x: 14, y: 12), velocity: Vector2D(x: 0, y: 0), maxVelocity: 25, maxForce: 25, maxTurnRate: 180)
-        
+        super.init(type: .Dog, position: CGPoint(x: 0, y: 0), hitPoints: 100, mass: 25, renderPoly: polygon, scale: 1, heading: Vector2D(x: 14, y: 12), velocity: Vector2D(x: 0, y: 0), maxVelocity: 25, maxForce: 25, maxTurnRate: 180,wanderDistance: 30, wanderRadius: 15, wanderJitter: 0.3)
     }
     
     // MARK: Conformance to CustomDebugStringConvertible.

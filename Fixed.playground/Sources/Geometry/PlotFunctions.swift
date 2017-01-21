@@ -5,7 +5,6 @@ import QuartzCore
 public class PlotFunctions
 {
     
-    
     public static func createBlankImage(ofSize size: CGSize) -> UIImage?
     {
         UIGraphicsBeginImageContext(size)
