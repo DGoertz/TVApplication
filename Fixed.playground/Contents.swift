@@ -22,13 +22,6 @@ import PlaygroundSupport
 //    }
 //}
 
-//let test: Vector2D = Vector2D(x: 5, y: 2)
-//let trans: Matrix2D = Matrix2D.getTranslation(tx: 2, ty: 7)
-//let ans = test * trans
-//print("\(ans)")
-for i in 0...9
-{
-    let dice = arc4random_uniform(2)
-    print("Index: \(i) - \(dice)")
-}
+let v1: Vector2D = Vector2D(x: 5, y: 2)
+let v2: Vector2D = Vector2D(x: 3, y: 7)
 

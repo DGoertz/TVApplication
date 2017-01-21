@@ -27,6 +27,8 @@ class SteeringBehavior
         let targetOnCircle: CGPoint = CGPoint(x: newTarget.normal()!.x * self.entity.wanderRadius, y: newTarget.normal()!.y * self.entity.wanderRadius)
         self.entity.wanderTarget = targetOnCircle
         let newSpot: Vector2D = Vector2D(x: self.entity.wanderDistance + self.entity.wanderTarget.x, y: self.entity.wanderDistance + self.entity.wanderTarget.y)
+        // Now we need to convert this local coordinate to world coordinates and seek to it.
+        
         return getSeek(toTarget: newSpot)
     }
     

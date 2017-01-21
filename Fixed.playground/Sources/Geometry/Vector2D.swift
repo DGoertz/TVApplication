@@ -130,18 +130,25 @@ public struct Vector2D: CustomStringConvertible, CustomDebugStringConvertible
     // Actual formula is: |v1| |v2| sin(theta)
     public func cross(with v2: Vector2D) -> CGFloat
     {
-        return (self.x * v2.y) - (v2.x * self.y)
+        return (self.x * v2.y) - (self.y * v2.x)
     }
     
-    // If I'm to the left then that is a (-) angle and therefore sin() is (-).
-    public func toLeft(of v2: Vector2D) -> Bool
+    // Sign is -1 if v2 is clockwise from the current vector; else +1
+    // and is counter-clockwise (which is a positive angle)
+    public func signWith(v2: Vector2D) -> Int8
     {
-        return self.cross(with: v2) < 0
+        return (self.y * v2.x) > (self.x * v2.y) ? -1 : 1
+    }
+    // If I'm to the left then that is a (-) angle.
+    public func isToLeft(of v2: Vector2D) -> Bool
+    {
+        return (self.y * v2.x) > (self.x * v2.y)
     }
     
-    public func toRight(of v2: Vector2D) -> Bool
+    // If I'm to the right then that is a (+) angle.
+    public func isToRight(of v2: Vector2D) -> Bool
     {
-        return self.cross(with: v2) > 0
+        return !((self.y * v2.x) > (self.x * v2.y))
     }
     
     // MARK: Overloaded operators.
