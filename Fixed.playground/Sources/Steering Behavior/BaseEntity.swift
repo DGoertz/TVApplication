@@ -60,16 +60,16 @@ public enum EntityType: CustomStringConvertible, CustomDebugStringConvertible
 
 public class BaseEntity: CustomStringConvertible, CustomDebugStringConvertible
 {
-    public var ID:                  String
-    public var type:                EntityType
-    public var position:            CGPoint // In world coordinates.
-    public var hitPoints:           CGFloat
-    public var mass:                CGFloat
-    public var renderPolygon:       [ CGPoint ]
-    public var scale:               CGFloat
-    public var boundingRadius:      CGFloat
+    public var ID:                  String!
+    public var type:                EntityType!
+    public var position:            CGPoint! // In world coordinates.
+    public var hitPoints:           CGFloat!
+    public var mass:                CGFloat!
+    public var renderPolygon:       Polygon!
+    public var scale:               CGFloat!
+    public var boundingRadius:      CGFloat!
     
-    public init(type: EntityType, position: CGPoint, hitPoints: CGFloat, mass: CGFloat, renderPoly: [ CGPoint ], scale: CGFloat)
+    public init(type: EntityType, position: CGPoint, hitPoints: CGFloat, mass: CGFloat, renderPoly: Polygon, scale: CGFloat)
     {
         self.ID = UUID().uuidString
         self.type = type
@@ -78,23 +78,24 @@ public class BaseEntity: CustomStringConvertible, CustomDebugStringConvertible
         self.mass = mass
         self.renderPolygon = renderPoly
         self.scale = scale
-        self.boundingRadius = BaseEntity.calcBoundingRadius(ofPolygon: BaseEntity.applyScale(toPolygon: self.renderPolygon, withScale: self.scale))
+        self.boundingRadius = BaseEntity.calcBoundingRadius(ofPolygon: self.getRenderablePolygon())
     }
     
-    static func applyScale(toPolygon polygon: [ CGPoint ], withScale scale: CGFloat) -> [ CGPoint ]
+    static func applyScale(toPolygon polygon: Polygon, withScale scale: CGFloat) -> Polygon
     {
-        return polygon.map({ (item: CGPoint) in return CGPoint(x: item.x * scale, y: item.y * scale) })
+        let scaledVertices = polygon.vertices.map({ (item: CGPoint) in return CGPoint(x: item.x * scale, y: item.y * scale) })
+        return Polygon(vertices: scaledVertices, scale: 1, color: polygon.color)
     }
     
-    static func calcBoundingRadius(ofPolygon polygon: [ CGPoint ]) -> CGFloat
+    static func calcBoundingRadius(ofPolygon polygon: Polygon) -> CGFloat
     {
-        let (minX, maxX, minY, maxY) = CGPoint.getBoundingBox(forPolygon: polygon)
+        let (minX, maxX, minY, maxY) = polygon.getBoundingBox()
         let width = maxX - minX
         let height = maxY - minY
         return (height > width) ? height: width
     }
     
-    public func getRenderablePolygon() -> [ CGPoint ]
+    public func getRenderablePolygon() -> Polygon
     {
         return BaseEntity.applyScale(toPolygon: self.renderPolygon, withScale: self.scale)
     }
@@ -127,13 +128,7 @@ public class BaseEntity: CustomStringConvertible, CustomDebugStringConvertible
     
     public func render(onto image: UIImage) -> UIImage?
     {
-        let scaledPoints: [ CGPoint ] = self.getRenderablePolygon()
-        guard let image = PlotFunctions.plotPoints(OnImage: image, points: scaledPoints, inColor: UIColor.red)
-            else
-        {
-            print("Render failed!")
-            return nil
-        }
-        return image
+        let scaledPolygon: Polygon = self.getRenderablePolygon()
+        return scaledPolygon.render(onTo: image)
     }
 }

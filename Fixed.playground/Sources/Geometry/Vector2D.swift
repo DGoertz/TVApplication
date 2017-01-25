@@ -23,6 +23,12 @@ public struct Vector2D: CustomStringConvertible, CustomDebugStringConvertible
         self = Vector2D(x: fromVect.x, y: fromVect.y)
     }
     
+    public init(fromSinglePoint point: CGPoint)
+    {
+        self.x = point.x
+        self.y = point.y
+    }
+    
     public init(fromStartPoint startPoint: CGPoint, toEndPoint endPoint: CGPoint)
     {
         self.x = endPoint.x - startPoint.x
@@ -67,13 +73,13 @@ public struct Vector2D: CustomStringConvertible, CustomDebugStringConvertible
         }
     }
     
-    public func normal() -> Vector2D?
+    public func normal() -> Vector2D
     {
         if self.length > CGFloat.leastNonzeroMagnitude
         {
             return Vector2D(x: self.x / self.length, y: self.y / self.length)
         }
-        return nil
+        return Vector2D(x: 0, y: 0)
     }
     
     public var perp: Vector2D { return Vector2D(x: -1 * self.y, y: self.x) }
@@ -122,6 +128,7 @@ public struct Vector2D: CustomStringConvertible, CustomDebugStringConvertible
     }
     
     // Since the dot product is: v1 dot v2 = |v1| |v2| cos(theta)
+    // This always gives a (+) angle.
     public func angleBetween(v2: Vector2D) -> CGFloat
     {
         return acos(self.dot(v2: v2) / (self.length * v2.length))
@@ -135,7 +142,7 @@ public struct Vector2D: CustomStringConvertible, CustomDebugStringConvertible
     
     // Sign is -1 if v2 is clockwise from the current vector; else +1
     // and is counter-clockwise (which is a positive angle)
-    public func signWith(v2: Vector2D) -> Int8
+    public func signWith(v2: Vector2D) -> CGFloat
     {
         return (self.y * v2.x) > (self.x * v2.y) ? -1 : 1
     }

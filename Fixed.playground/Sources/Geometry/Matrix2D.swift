@@ -79,6 +79,16 @@ public class Matrix2D : CustomStringConvertible
         return retVal
     }
     
+    public static func getRotation(heading: Vector2D, side: Vector2D) -> Matrix2D
+    {
+        let retVal: Matrix2D = getIdentity()
+        retVal.cell_11 = heading.x
+        retVal.cell_21 = heading.y
+        retVal.cell_12 = side.x
+        retVal.cell_22 = side.y
+        return retVal
+    }
+    
     public static func getAntiRotation(heading: Vector2D) -> Matrix2D
     {
         let retVal: Matrix2D = getIdentity()
@@ -89,6 +99,18 @@ public class Matrix2D : CustomStringConvertible
         retVal.cell_12 = -sinTheta
         retVal.cell_21 = sinTheta
         retVal.cell_22 = cosTheta
+        return retVal
+    }
+    
+    public static func getCoorTranslation(heading: Vector2D, side: Vector2D, origin: CGPoint) -> Matrix2D
+    {
+        let retVal: Matrix2D = getIdentity()
+        retVal.cell_11 = heading.x
+        retVal.cell_21 = heading.y
+        retVal.cell_12 = side.x
+        retVal.cell_22 = side.y
+        retVal.cell_31 = origin.x
+        retVal.cell_32 = origin.y
         return retVal
     }
 }
@@ -144,4 +166,38 @@ public func * (left: Matrix2D, right: Matrix2D) -> Vector2D
         y = y / z
     }
     return Vector2D(x: x, y: y)
+}
+
+// a b c | j k l
+// d e f | m n o
+// g h i | p q r
+public func * (left: Matrix2D, right: Matrix2D) -> Matrix2D
+{
+    let retMatrix: Matrix2D = Matrix2D()
+    
+    let one: CGFloat = (left.cell_11 * right.cell_11) + (left.cell_12 * right.cell_21) + (left.cell_13 * right.cell_31)
+    let two: CGFloat = (left.cell_11 * right.cell_12) + (left.cell_12 * right.cell_22) + (left.cell_13 * right.cell_32)
+    let tre: CGFloat = (left.cell_11 * right.cell_13) + (left.cell_12 * right.cell_23) + (left.cell_13 * right.cell_33)
+    
+    let frr: CGFloat = (left.cell_21 * right.cell_11) + (left.cell_22 * right.cell_21) + (left.cell_23 * right.cell_31)
+    let fiv: CGFloat = (left.cell_21 * right.cell_12) + (left.cell_22 * right.cell_22) + (left.cell_23 * right.cell_32)
+    let six: CGFloat = (left.cell_21 * right.cell_13) + (left.cell_22 * right.cell_23) + (left.cell_23 * right.cell_33)
+    
+    let sev: CGFloat = (left.cell_31 * right.cell_11) + (left.cell_32 * right.cell_21) + (left.cell_33 * right.cell_31)
+    let eig: CGFloat = (left.cell_31 * right.cell_12) + (left.cell_32 * right.cell_22) + (left.cell_33 * right.cell_32)
+    let nin: CGFloat = (left.cell_31 * right.cell_13) + (left.cell_32 * right.cell_23) + (left.cell_33 * right.cell_33)
+    
+    retMatrix.cell_11 = one
+    retMatrix.cell_12 = two
+    retMatrix.cell_13 = tre
+    
+    retMatrix.cell_21 = frr
+    retMatrix.cell_22 = fiv
+    retMatrix.cell_23 = six
+    
+    retMatrix.cell_31 = sev
+    retMatrix.cell_32 = eig
+    retMatrix.cell_33 = nin
+    
+    return retMatrix
 }

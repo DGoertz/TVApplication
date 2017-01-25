@@ -23,6 +23,12 @@ struct Vector2D: CustomStringConvertible
         self = Vector2D(x: fromVect.x, y: fromVect.y)
     }
     
+    init(fromSinglePoint point: CGPoint)
+    {
+        self.x = point.x
+        self.y = point.y
+    }
+    
     init(fromStartPoint startPoint: CGPoint, andEndPoint endPoint: CGPoint)
     {
         self.x = endPoint.x - startPoint.x

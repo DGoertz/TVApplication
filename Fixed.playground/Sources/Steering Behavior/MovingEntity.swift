@@ -13,11 +13,15 @@ public class MovingEntity : BaseEntity
     public var wanderJitter:        CGFloat!
     public var wanderTarget:        CGPoint!
     
-    var heading: Vector2D?
+    var heading: Vector2D
         {
         set(newValue)
         {
-            self.normalizedHeading = newValue?.normal()
+            if newValue.normal().length - 1 < 0.00001
+            {
+                self.normalizedHeading = newValue.normal()
+            }
+            self.normalizedHeading = Vector2D(x: 0, y: 0)
         }
         get
         {
@@ -25,11 +29,19 @@ public class MovingEntity : BaseEntity
         }
     }
     
-    var siding: Vector2D?
+    var siding: Vector2D
         {
         get
         {
             return self.normalizedHeading.perp
+        }
+    }
+    
+    public override var position: CGPoint!
+    {
+        didSet(newValue)
+        {
+            self.faceNewPosition()
         }
     }
     
@@ -47,4 +59,16 @@ public class MovingEntity : BaseEntity
         // Need to calculate the initial value for wanderTarget.
     }
 
+    public func faceNewPosition() -> Void
+    {
+        let asVector: Vector2D = Vector2D(fromSinglePoint: self.position)
+        let angleBetween: CGFloat = self.heading.angleBetween(v2: asVector)
+        if angleBetween != CGFloat.nan && angleBetween > 0.00001
+        {
+            let angleSign = self.heading.signWith(v2: asVector)
+            let rotation: Matrix2D = Matrix2D.getRotation(theta: angleSign * angleBetween)
+            self.heading = self.heading * rotation
+            self.currentVelocity = self.currentVelocity * rotation
+        }
+    }
 }

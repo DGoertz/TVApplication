@@ -5,12 +5,14 @@ import UIKit
 public struct Line: CustomStringConvertible, CustomDebugStringConvertible
 {
     public var startPoint: CGPoint
-    public var endPoint: CGPoint
+    public var endPoint:   CGPoint
+    public var color:      UIColor
     
-    public init(startPoint: CGPoint, endPoint: CGPoint)
+    public init(startPoint: CGPoint, endPoint: CGPoint, color: UIColor)
     {
         self.startPoint = startPoint
         self.endPoint = endPoint
+        self.color = color
     }
     
     // MARK: Conformance to CustomDebugStringConvertible.
@@ -29,38 +31,37 @@ public struct Line: CustomStringConvertible, CustomDebugStringConvertible
     
     // Ray begins to the left of the bounding box and extends to just right
     // of the click-point.
-    public static func calcMinRay(fromClickPoint point: CGPoint, andPolygon polygon: [CGPoint]) -> Line
+    public static func calcMinRay(fromClickPoint point: CGPoint, andPolygon polygon: Polygon) -> Line
     {
         let tollerance: CGFloat = CGFloat.leastNormalMagnitude
-        let startX = polygon.reduce(CGFloat.greatestFiniteMagnitude, { min($0,$1.x) })
+        let startX = polygon.vertices.reduce(CGFloat.greatestFiniteMagnitude, { min($0,$1.x) })
         let startPoint: CGPoint = CGPoint(x: startX - tollerance, y: point.y)
         let endX: CGFloat = point.x + tollerance
         let endPoint: CGPoint = CGPoint(x: endX, y: point.y)
-        let retVal = Line(startPoint: startPoint, endPoint: endPoint)
-        print("Ray: \(retVal)")
+        let retVal = Line(startPoint: startPoint, endPoint: endPoint, color: UIColor.black)
         return retVal
     }
     
     // Produce an array of Lines that represent the sides of the polygon.an
     // Notice that the sides form a closed polygon.
-    public static func getSides(ofPolygon polygon: [CGPoint]) -> [ Line ]
+    public static func getSides(ofPolygon polygon: Polygon) -> [ Line ]
     {
         var sides: [ Line ] = [ Line ]()
-        for (index, v) in polygon.enumerated()
+        for (index, v) in polygon.vertices.enumerated()
         {
             var first: CGPoint
             var second: CGPoint
-            if index + 1 < polygon.count
+            if index + 1 < polygon.vertices.count
             {
                 first = v
-                second = polygon[index + 1]
+                second = polygon.vertices[index + 1]
             }
             else
             {
                 first = v
-                second = polygon.first!
+                second = polygon.vertices.first!
             }
-            sides.append(Line(startPoint: first, endPoint: second))
+            sides.append(Line(startPoint: first, endPoint: second, color: UIColor.black))
         }
         return sides
     }
@@ -68,9 +69,9 @@ public struct Line: CustomStringConvertible, CustomDebugStringConvertible
     // This is just to eliminate points that are way outside of the polygon.
     // If this function returns true the point must be further checked to
     // see that the point is not within a convex section of the polygon.
-    public static func isPointInBoundingBox(point: CGPoint, inPolygon: [CGPoint]) -> Bool
+    public static func isPointInBoundingBox(point: CGPoint, inPolygon: Polygon) -> Bool
     {
-        let (minX, maxX, minY, maxY) = CGPoint.getBoundingBox(forPolygon: inPolygon)
+        let (minX, maxX, minY, maxY) = inPolygon.getBoundingBox()
         if point.x < minX || point.x > maxX || point.y < minY || point.y > maxY
         {
             return false
@@ -129,5 +130,23 @@ public struct Line: CustomStringConvertible, CustomDebugStringConvertible
             return true
         }
         return false
+    }
+    
+    public func render(onTo image: UIImage) -> UIImage?
+    {
+        UIGraphicsBeginImageContext(image.size)
+        if let context = UIGraphicsGetCurrentContext()
+        {
+            context.setBlendMode(.normal)
+            context.setLineWidth(1)
+            context.setStrokeColor(self.color.cgColor)
+            context.move(to: self.startPoint)
+            context.addLine(to: self.endPoint)
+            context.strokePath()
+            let result: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+            UIGraphicsEndImageContext()
+            return result
+        }
+        return nil
     }
 }
