@@ -8,6 +8,13 @@ public class Polygon
     var scale:    CGFloat
     var color:    UIColor
     
+    public init(vertices: [ CGPoint ], scale: CGFloat)
+    {
+        self.vertices = vertices
+        self.scale = scale
+        self.color = UIColor.black
+    }
+    
     public init(vertices: [ CGPoint ], scale: CGFloat, color: UIColor)
     {
         self.vertices = vertices
@@ -15,13 +22,13 @@ public class Polygon
         self.color = color
     }
     
-    public func getBoundingBox() -> (CGFloat, CGFloat, CGFloat, CGFloat)
+    public func getBoundingBox() -> CGRect
     {
         let minX = self.vertices.reduce(CGFloat.greatestFiniteMagnitude, { min($0,$1.x) })
         let minY = self.vertices.reduce(CGFloat.greatestFiniteMagnitude, { min($0,$1.x) })
         let maxX = self.vertices.reduce(CGFloat.leastNormalMagnitude, { max($0,$1.x) })
         let maxY = self.vertices.reduce(CGFloat.leastNormalMagnitude, { max($0,$1.x) })
-        return (minX, maxX, minY, maxY)
+        return CGRect(origin: CGPoint(x: minX, y: minY), size: CGSize(width: maxX - minX, height: maxY - minY))
     }
     
     public func render(onTo image: UIImage) -> UIImage?

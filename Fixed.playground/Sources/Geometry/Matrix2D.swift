@@ -131,6 +131,20 @@ public func * (left: Vector2D, right: Matrix2D) -> Vector2D
     return Vector2D(x: x, y: y)
 }
 
+// (x, y)
+public func * (left: CGPoint, right: Matrix2D) -> CGPoint
+{
+    var x: CGFloat = left.x * right.cell_11 + left.y * right.cell_21
+    var y: CGFloat = left.x * right.cell_12 + left.y * right.cell_22
+    let h: CGFloat = left.x * right.cell_13 + left.y * right.cell_23
+    if h != 1
+    {
+        x = x / h
+        y = y / h
+    }
+    return CGPoint(x: x, y: y)
+}
+
 // a b c | 0 0 0
 // d e f | 0 0 0
 // g h i | 0 0 0

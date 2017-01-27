@@ -3,15 +3,17 @@ import CoreGraphics
 
 public class MovingEntity : BaseEntity
 {
-    internal var normalizedHeading: Vector2D!
-    public var currentVelocity:     Vector2D!
-    public var maxVelocity:         CGFloat!
-    public var maxForce:            CGFloat!
-    public var maxTurnRate:         CGFloat!
-    public var wanderDistance:      CGFloat!
-    public var wanderRadius:        CGFloat!
-    public var wanderJitter:        CGFloat!
-    public var wanderTarget:        CGPoint!
+    static var minimumDetectionBoxWidth: CGFloat = 10
+    
+    internal var normalizedHeading:      Vector2D!
+    public var currentVelocity:          Vector2D!
+    public var maxVelocity:              CGFloat!
+    public var maxForce:                 CGFloat!
+    public var maxTurnRate:              CGFloat!
+    public var wanderDistance:           CGFloat!
+    public var wanderRadius:             CGFloat!
+    public var wanderJitter:             CGFloat!
+    public var wanderTarget:             CGPoint!
     
     var heading: Vector2D
         {
@@ -45,9 +47,9 @@ public class MovingEntity : BaseEntity
         }
     }
     
-    init(type: EntityType, position: CGPoint, hitPoints: CGFloat, mass: CGFloat, renderPoly: [ CGPoint ], scale: CGFloat, heading: Vector2D, velocity: Vector2D, maxVelocity: CGFloat, maxForce: CGFloat, maxTurnRate: CGFloat, wanderDistance: CGFloat, wanderRadius: CGFloat, wanderJitter: CGFloat)
+    init(type: EntityType, position: CGPoint, hitPoints: CGFloat, mass: CGFloat, itsPoly: Polygon, scale: CGFloat, heading: Vector2D, velocity: Vector2D, maxVelocity: CGFloat, maxForce: CGFloat, maxTurnRate: CGFloat, wanderDistance: CGFloat, wanderRadius: CGFloat, wanderJitter: CGFloat)
     {
-        super.init(type: type, position: position, hitPoints: hitPoints, mass: mass, renderPoly: renderPoly, scale: scale)
+        super.init(type: type, position: position, hitPoints: hitPoints, mass: mass, itsPoly: itsPoly, scale: scale)
         self.heading = heading
         self.currentVelocity = velocity
         self.maxVelocity = maxVelocity
@@ -70,5 +72,15 @@ public class MovingEntity : BaseEntity
             self.heading = self.heading * rotation
             self.currentVelocity = self.currentVelocity * rotation
         }
+    }
+    
+    public func getDetectionBox() -> CGRect
+    {
+        let newWidth: CGFloat = MovingEntity.minimumDetectionBoxWidth + (MovingEntity.minimumDetectionBoxWidth * (self.currentVelocity / self.maxVelocity).length)
+        let box: Polygon = self.renderPolygon
+        let currentBoundingBox: CGRect = box.getBoundingBox()
+        let origin: CGPoint = CGPoint(x: currentBoundingBox.minX, y: currentBoundingBox.minY)
+        let size: CGSize = CGSize(width: newWidth, height: currentBoundingBox.height)
+        return CGRect(origin: origin, size: size)
     }
 }

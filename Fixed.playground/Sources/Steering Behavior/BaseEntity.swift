@@ -65,39 +65,35 @@ public class BaseEntity: CustomStringConvertible, CustomDebugStringConvertible
     public var position:            CGPoint! // In world coordinates.
     public var hitPoints:           CGFloat!
     public var mass:                CGFloat!
-    public var renderPolygon:       Polygon!
+    internal var itsPolygon:        Polygon!
     public var scale:               CGFloat!
     public var boundingRadius:      CGFloat!
     
-    public init(type: EntityType, position: CGPoint, hitPoints: CGFloat, mass: CGFloat, renderPoly: Polygon, scale: CGFloat)
+    public var renderPolygon:       Polygon { return self.getRenderablePolygon() }
+    
+    public init(type: EntityType, position: CGPoint, hitPoints: CGFloat, mass: CGFloat, itsPoly: Polygon, scale: CGFloat)
     {
         self.ID = UUID().uuidString
         self.type = type
         self.position = position
         self.hitPoints = hitPoints
         self.mass = mass
-        self.renderPolygon = renderPoly
+        self.itsPolygon = itsPoly
         self.scale = scale
-        self.boundingRadius = BaseEntity.calcBoundingRadius(ofPolygon: self.getRenderablePolygon())
+        self.boundingRadius = self.calcBoundingRadius()
     }
     
-    static func applyScale(toPolygon polygon: Polygon, withScale scale: CGFloat) -> Polygon
+    func calcBoundingRadius() -> CGFloat
     {
-        let scaledVertices = polygon.vertices.map({ (item: CGPoint) in return CGPoint(x: item.x * scale, y: item.y * scale) })
-        return Polygon(vertices: scaledVertices, scale: 1, color: polygon.color)
-    }
-    
-    static func calcBoundingRadius(ofPolygon polygon: Polygon) -> CGFloat
-    {
-        let (minX, maxX, minY, maxY) = polygon.getBoundingBox()
-        let width = maxX - minX
-        let height = maxY - minY
-        return (height > width) ? height: width
+        let polygon: Polygon = self.renderPolygon
+        let bb = polygon.getBoundingBox()
+        return (bb.height > bb.width) ? bb.height: bb.width
     }
     
     public func getRenderablePolygon() -> Polygon
     {
-        return BaseEntity.applyScale(toPolygon: self.renderPolygon, withScale: self.scale)
+        let scaledVertices = self.itsPolygon.vertices.map({ (item: CGPoint) in return CGPoint(x: item.x * self.scale, y: item.y * self.scale) })
+        return Polygon(vertices: scaledVertices, scale: 1)
     }
     
     // MARK: Conformance to CustomDebugStringConvertible.
@@ -128,7 +124,7 @@ public class BaseEntity: CustomStringConvertible, CustomDebugStringConvertible
     
     public func render(onto image: UIImage) -> UIImage?
     {
-        let scaledPolygon: Polygon = self.getRenderablePolygon()
+        let scaledPolygon: Polygon = self.renderPolygon
         return scaledPolygon.render(onTo: image)
     }
 }

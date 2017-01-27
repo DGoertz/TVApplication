@@ -8,6 +8,13 @@ public struct Line: CustomStringConvertible, CustomDebugStringConvertible
     public var endPoint:   CGPoint
     public var color:      UIColor
     
+    public init(startPoint: CGPoint, endPoint: CGPoint)
+    {
+        self.startPoint = startPoint
+        self.endPoint = endPoint
+        self.color = UIColor.black
+    }
+    
     public init(startPoint: CGPoint, endPoint: CGPoint, color: UIColor)
     {
         self.startPoint = startPoint
@@ -38,7 +45,7 @@ public struct Line: CustomStringConvertible, CustomDebugStringConvertible
         let startPoint: CGPoint = CGPoint(x: startX - tollerance, y: point.y)
         let endX: CGFloat = point.x + tollerance
         let endPoint: CGPoint = CGPoint(x: endX, y: point.y)
-        let retVal = Line(startPoint: startPoint, endPoint: endPoint, color: UIColor.black)
+        let retVal = Line(startPoint: startPoint, endPoint: endPoint)
         return retVal
     }
     
@@ -61,7 +68,7 @@ public struct Line: CustomStringConvertible, CustomDebugStringConvertible
                 first = v
                 second = polygon.vertices.first!
             }
-            sides.append(Line(startPoint: first, endPoint: second, color: UIColor.black))
+            sides.append(Line(startPoint: first, endPoint: second))
         }
         return sides
     }
@@ -71,8 +78,8 @@ public struct Line: CustomStringConvertible, CustomDebugStringConvertible
     // see that the point is not within a convex section of the polygon.
     public static func isPointInBoundingBox(point: CGPoint, inPolygon: Polygon) -> Bool
     {
-        let (minX, maxX, minY, maxY) = inPolygon.getBoundingBox()
-        if point.x < minX || point.x > maxX || point.y < minY || point.y > maxY
+        let bb = inPolygon.getBoundingBox()
+        if point.x < bb.minX || point.x > bb.maxX || point.y < bb.minY || point.y > bb.maxY
         {
             return false
         }

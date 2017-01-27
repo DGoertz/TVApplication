@@ -13,7 +13,7 @@ public class Circle
     {
         self.center = center
         self.radius = radius
-        self.boundingBox = CGRect(origin: CGPoint(x: self.center.x - self.radius, y: self.center.y - self.radius), size: CGSize(width: self.radius, height: self.radius))
+        self.boundingBox = CGRect(origin: CGPoint(x: self.center.x - self.radius, y: self.center.y - self.radius), size: CGSize(width: self.radius * 2, height: self.radius * 2))
         self.color = color
     }
     
