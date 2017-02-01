@@ -70,13 +70,13 @@ public class MovingEntity : BaseEntity
             let angleSign = self.heading.signWith(v2: asVector)
             let rotation: Matrix2D = Matrix2D.getRotation(theta: angleSign * angleBetween)
             self.heading = self.heading * rotation
-            self.currentVelocity = self.currentVelocity * rotation
+            self.currentVelocity = (self.currentVelocity * rotation).truncate(toMax: self.maxVelocity)
         }
     }
     
     public func getDetectionBox() -> CGRect
     {
-        let newWidth: CGFloat = MovingEntity.minimumDetectionBoxWidth + (MovingEntity.minimumDetectionBoxWidth * (self.currentVelocity / self.maxVelocity).length)
+        let newWidth: CGFloat = MovingEntity.minimumDetectionBoxWidth + ((MovingEntity.minimumDetectionBoxWidth * (self.currentVelocity / self.maxVelocity).length))
         let box: Polygon = self.renderPolygon
         let currentBoundingBox: CGRect = box.getBoundingBox()
         let origin: CGPoint = CGPoint(x: currentBoundingBox.minX, y: currentBoundingBox.minY)

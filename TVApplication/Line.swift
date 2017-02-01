@@ -83,9 +83,9 @@ struct Line: CustomStringConvertible, CustomDebugStringConvertible
     static func getBoundingBox(forPolygon polygon: [CGPoint]) -> (CGFloat, CGFloat, CGFloat, CGFloat)
     {
         let minX = polygon.reduce(CGFloat.greatestFiniteMagnitude, { min($0,$1.x) })
-        let minY = polygon.reduce(CGFloat.greatestFiniteMagnitude, { min($0,$1.x) })
+        let minY = polygon.reduce(CGFloat.greatestFiniteMagnitude, { min($0,$1.y) })
         let maxX = polygon.reduce(CGFloat.leastNormalMagnitude, { max($0,$1.x) })
-        let maxY = polygon.reduce(CGFloat.leastNormalMagnitude, { max($0,$1.x) })
+        let maxY = polygon.reduce(CGFloat.leastNormalMagnitude, { max($0,$1.y) })
         return (minX, maxX, minY, maxY)
     }
     

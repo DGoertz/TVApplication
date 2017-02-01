@@ -25,9 +25,9 @@ public class Polygon
     public func getBoundingBox() -> CGRect
     {
         let minX = self.vertices.reduce(CGFloat.greatestFiniteMagnitude, { min($0,$1.x) })
-        let minY = self.vertices.reduce(CGFloat.greatestFiniteMagnitude, { min($0,$1.x) })
+        let minY = self.vertices.reduce(CGFloat.greatestFiniteMagnitude, { min($0,$1.y) })
         let maxX = self.vertices.reduce(CGFloat.leastNormalMagnitude, { max($0,$1.x) })
-        let maxY = self.vertices.reduce(CGFloat.leastNormalMagnitude, { max($0,$1.x) })
+        let maxY = self.vertices.reduce(CGFloat.leastNormalMagnitude, { max($0,$1.y) })
         return CGRect(origin: CGPoint(x: minX, y: minY), size: CGSize(width: maxX - minX, height: maxY - minY))
     }
     
