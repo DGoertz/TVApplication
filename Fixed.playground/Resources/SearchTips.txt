@@ -1,0 +1,10 @@
+Search Tips
+
+"term" AROUND(#) "another term" - term will be # words from another term.
+"term" - term will definitely be in the result.
+~term - will search for term and its synonyms.
+-term - term will not be in the result.
+filetype: .txt - matching URLS will have to end in that extension.
+inurl: some.words_here - matches will have this inside the URL
+site: site.name - result from that site only.
+"""this is exact""" - match verbatum.
