@@ -1,9 +1,6 @@
-
 import UIKit
 import Foundation
 import PlaygroundSupport
-
-import Foundation
 
 public class BinaryStdIn
 {
@@ -41,7 +38,7 @@ public class BinaryStdIn
         }
     }
     
-    public var atEndOfFile: Bool
+    public func isEmpty() -> Bool
     {
         return self.endOfFile
     }
@@ -167,11 +164,6 @@ public class BinaryStdIn
     func readChar(numBits: Int) throws -> UInt16
     {
         return 0
-    }
-    
-    func isEmpty() -> Bool
-    {
-        return false
     }
 }
 
