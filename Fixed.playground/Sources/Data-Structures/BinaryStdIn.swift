@@ -1,16 +1,14 @@
 import UIKit
-import Foundation
-import PlaygroundSupport
 
 public class BinaryStdIn
 {
-    var file:        URL!
-    var fh:          FileHandle!
-    var readAhead:   Int!
-    var dataBuffer:  Data?
-    var byteIndex:   Int?
-    var bitIndex:    Int?
-    var endOfFile:   Bool = false
+    var file:       URL!
+    var fh:         FileHandle!
+    var readAhead:  Int!
+    var dataBuffer: Data?
+    var byteIndex:  Int?
+    var bitIndex:   Int?
+    var endOfFile:  Bool = false
     
     public init(fileName: String, ext: String, readAhead: Int)
     {
@@ -109,6 +107,26 @@ public class BinaryStdIn
         return c
     }
     
+    public func readChar(numBits: Int) -> UInt16
+    {
+        guard numBits < 17 else {
+            return 0xFFFF
+        }
+        let endIndex = self.bitIndex! + numBits
+        var mask: UInt16 = 0
+        for i in self.bitIndex!..<endIndex
+        {
+            let n = (0x01 << UInt16(i))
+            mask = mask | n
+        }
+        let firstByte: UInt16 = UInt16(self.getCurrentByte())
+        self.incrementByteIndex()
+        let secondByte: UInt16 = UInt16(self.getCurrentByte())
+        self.incrementByteIndex()
+        let value: UInt16 = UInt16(firstByte << 8) | UInt16(secondByte)
+        return value & mask
+    }
+    
     public func readShort() -> UInt16
     {
         let highByte: UInt16 = UInt16(self.getCurrentByte())
@@ -160,10 +178,4 @@ public class BinaryStdIn
         self.bitIndex = nil
         self.endOfFile = true
     }
-    
-    func readChar(numBits: Int) throws -> UInt16
-    {
-        return 0
-    }
 }
-
