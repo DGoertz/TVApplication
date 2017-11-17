@@ -66,12 +66,18 @@ public class Matrix2D : CustomStringConvertible
         return retVal
     }
     
+    public static func getSinCos(heading: Vector2D) -> (CGFloat, CGFloat)
+    {
+        let hypotLength: CGFloat = CGFloat(sqrt((heading.x * heading.x) + (heading.y * heading.y)))
+        let sinTheta: CGFloat = heading.y / hypotLength
+        let cosTheta: CGFloat = heading.x / hypotLength
+        return (sinTheta, cosTheta)
+    }
+    
     public static func getRotation(heading: Vector2D) -> Matrix2D
     {
+        let (sinTheta, cosTheta) = Matrix2D.getSinCos(heading: heading)
         let retVal: Matrix2D = getIdentity()
-        let hypotLength: CGFloat = CGFloat(sqrt((heading.x * heading.x) + (heading.y * heading.y)))
-        let cosTheta: CGFloat = heading.x / hypotLength
-        let sinTheta: CGFloat = heading.y / hypotLength
         retVal.cell_11 = cosTheta
         retVal.cell_12 = sinTheta
         retVal.cell_21 = -sinTheta
@@ -91,10 +97,8 @@ public class Matrix2D : CustomStringConvertible
     
     public static func getAntiRotation(heading: Vector2D) -> Matrix2D
     {
+        let (sinTheta, cosTheta) = Matrix2D.getSinCos(heading: heading)
         let retVal: Matrix2D = getIdentity()
-        let hypotLength: CGFloat = CGFloat(sqrt((heading.x * heading.x) + (heading.y * heading.y)))
-        let cosTheta: CGFloat = heading.x / hypotLength
-        let sinTheta: CGFloat = heading.y / hypotLength
         retVal.cell_11 = cosTheta
         retVal.cell_12 = -sinTheta
         retVal.cell_21 = sinTheta

@@ -13,7 +13,7 @@ extension UIColor
         {
             dice = Int(arc4random_uniform(UInt32(colorDomain.count)))
         }
-            while colorDomain[dice] == notThis
+        while colorDomain[dice] == notThis
         return colorDomain[dice]
     }
 }

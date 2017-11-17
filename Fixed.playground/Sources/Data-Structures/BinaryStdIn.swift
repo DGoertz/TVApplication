@@ -116,7 +116,7 @@ public class BinaryStdIn
         var mask: UInt16 = 0
         for i in self.bitIndex!..<endIndex
         {
-            let n = (0x01 << UInt16(i))
+            let n: UInt16 = (0x01 << UInt16(i))
             mask = mask | n
         }
         let firstByte: UInt16 = UInt16(self.getCurrentByte())
@@ -167,7 +167,11 @@ public class BinaryStdIn
         self.incrementByteIndex()
         let eighthByte: UInt64 = UInt64(self.getCurrentByte())
         self.incrementByteIndex()
-        return UInt64(firstByte << 56) | UInt64(secondByte << 48) | UInt64(thirdByte << 40) | UInt64(fourthByte  << 32) | UInt64(fifthByte << 24) | UInt64(sixthByte << 16) | UInt64(seventhByte << 8) | UInt64(eighthByte)
+        var retVal: UInt64 = UInt64(firstByte << 56) | UInt64(secondByte << 48)
+        retVal = retVal | UInt64(thirdByte << 40) | UInt64(fourthByte  << 32)
+        retVal = retVal | UInt64(fifthByte << 24) | UInt64(sixthByte << 16)
+        retVal = retVal | UInt64(seventhByte << 8) | UInt64(eighthByte)
+        return retVal
     }
     
     public func close() -> Void

@@ -23,7 +23,10 @@ public class MovingEntity : BaseEntity
             {
                 self.normalizedHeading = newValue.normal()
             }
-            self.normalizedHeading = Vector2D(x: 0, y: 0)
+            else
+            {                
+                self.normalizedHeading = Vector2D(x: 0, y: 0)
+            }
         }
         get
         {
