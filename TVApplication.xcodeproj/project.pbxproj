@@ -191,7 +191,7 @@
 				TargetAttributes = {
 					8894B6401E0DD39C00F1A97B = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 5EJLHTK7N7;
+						DevelopmentTeam = DBF596944M;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -362,7 +362,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				DEVELOPMENT_TEAM = 5EJLHTK7N7;
+				DEVELOPMENT_TEAM = DBF596944M;
 				INFOPLIST_FILE = TVApplication/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.DRGEnterprises.TVApplication;
@@ -376,7 +376,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				DEVELOPMENT_TEAM = 5EJLHTK7N7;
+				DEVELOPMENT_TEAM = DBF596944M;
 				INFOPLIST_FILE = TVApplication/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.DRGEnterprises.TVApplication;
