@@ -33,7 +33,7 @@ class ViewController: UIViewController
             "       "]
         let start: TimeInterval = NSDate.timeIntervalSinceReferenceDate
         let rows: Int = map.count
-        let columns: Int = map[0].characters.count
+        let columns: Int = map[0].count
         let finder: AStar = AStar(numberOfRows: rows, numberOfColumns: columns, mapStencil: map)
         let startPoint: Point = (finder.theMap.getStartNode()?.location)!
         let endPoint: Point = (finder.theMap.getEndNode()?.location)!

@@ -39,7 +39,7 @@ class Map: CustomStringConvertible
         {
             let currentRowString: String = mapStencil[r]
             col = 0
-            for c in currentRowString.characters
+            for c in currentRowString
             {
                 let currentLocation: Point = Point(x: col, y: r)
                 switch c
