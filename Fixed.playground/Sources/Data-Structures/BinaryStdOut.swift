@@ -6,7 +6,8 @@ public class BinaryStdOut
     var fh:         FileHandle!
     var dataBuffer: Data?
     var byteIndex:  Int?
-    var bitIndex:   Int?
+    // This will be the actual bit number, 1-8.
+    var bitIndex:   UInt8?
     
     public init(fileName: String, ext: String)
     {

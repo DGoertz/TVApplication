@@ -2,26 +2,30 @@ import UIKit
 
 public class BinaryStdIn
 {
-    var file:       URL!
-    var fh:         FileHandle!
-    var readAhead:  Int!
-    var dataBuffer: Data?
-    var byteIndex:  Int?
-    var bitIndex:   Int?
-    var endOfFile:  Bool = false
-    var isEmpty:    Bool
+    static let MaxBitIndex: UInt8 = 8
+    static let MinBitIndex: UInt8 = 1
+    
+    var file:             URL!
+    var fh:               FileHandle!
+    var readAhead:        Int!
+    var dataBuffer:       Data?
+    var byteIndex:        Int?
+    // This will be the actual bit number, 1-8.
+    var bitIndex:         UInt8?
+    var endOfFile:        Bool = false
+    var isEmpty:          Bool
     {
         return self.endOfFile
     }
-    var outOfData:  Bool
+    var outOfData:        Bool
     {
         return (self.byteIndex! >= (self.dataBuffer?.count)!)
     }
     var bitMaskFromIndex: UInt8
     {
-        return (0x01 << UInt8(self.bitIndex!))
+        return UInt8(0x01 << UInt8(self.bitIndex! - 1))
     }
-    var currentByte: UInt8
+    var currentByte:      UInt8
     {
         return (self.dataBuffer?[self.byteIndex!])! as UInt8
     }
@@ -63,141 +67,115 @@ public class BinaryStdIn
         }
         self.dataBuffer = dataBuffer
         self.byteIndex = 0
-        self.bitIndex = 0
+        self.bitIndex = BinaryStdIn.MaxBitIndex
         self.endOfFile = false
         return dataBuffer.count
     }
     
-    public func incrementByteIndex() -> Void
+    public func indexNextByteInBuffer() -> Void
     {
-        self.byteIndex! = self.byteIndex! + 1
-        self.bitIndex! = 0
+        self.byteIndex! += 1
+        self.bitIndex! = BinaryStdIn.MaxBitIndex
         if self.outOfData
         {
+            // May have to detect when this reads bytes < 1
             let _ = self.readNextDataBuffer()
         }
     }
     
-    public func incrementBitIndex() -> Void
+    public func decrementBitIndex() -> Void
     {
-        self.bitIndex! = self.bitIndex! + 1
-        if self.bitIndex! > 7
+        self.bitIndex! -= 1
+        if self.bitIndex! < BinaryStdIn.MinBitIndex
         {
-            self.incrementByteIndex()
+            self.indexNextByteInBuffer()
         }
     }
     
     public func readBoolean() -> Bool
     {
-        let currentByte = self.currentByte
-        let desiredBit = self.bitMaskFromIndex & currentByte
-        self.incrementBitIndex()
-        return desiredBit > 0 ? true : false
+        let desiredBit: UInt8 = self.bitMaskFromIndex & self.currentByte
+        self.decrementBitIndex()
+        return (desiredBit > 0) ? true : false
     }
     
-    public func readToByteBoundary() -> CChar
+    public func readByteAcrossByteBoundary() -> UInt8
     {
-        let leftToGo: Int = 8 - self.bitIndex!
-        guard leftToGo != 8 else { return CChar(0) }
-        print(leftToGo)
-        var partialRetVal: UInt8 = 0
-        for x in 0..<leftToGo
+        let bitsToChopOffTop = (BinaryStdIn.MaxBitIndex - self.bitIndex!)
+        let topPart: UInt8 = UInt8(self.currentByte << bitsToChopOffTop)
+        let tempBitIndex = self.bitIndex!
+        self.indexNextByteInBuffer()
+        self.bitIndex = tempBitIndex
+        let bottomPart: UInt8 = UInt8(self.currentByte >> tempBitIndex)
+        return UInt8(topPart + bottomPart)
+    }
+    
+    public func readChar() -> UInt16
+    {
+        // We need to get 8 bits, some from the next byte.
+        if self.bitIndex != BinaryStdIn.MaxBitIndex
         {
-            let nextBit: UInt8 = (self.bitMaskFromIndex & self.currentByte) > 0 ? 1 : 0
-            print(" \(nextBit) ")
-            self.incrementBitIndex()
-            if x == 0
-            {
-                partialRetVal = nextBit
-                continue
-            }
-            partialRetVal = (partialRetVal << 0x01) | nextBit
+            return UInt16(self.readByteAcrossByteBoundary())
         }
-        print("Returning: \(partialRetVal)")
-        return CChar(partialRetVal)
+        let retVal: UInt16 = UInt16(self.currentByte)
+        self.indexNextByteInBuffer()
+        return retVal
     }
     
-    public func readChar() -> CChar
+    // Need to fix this to go across boundary.
+    public func readChar(numBits: UInt8) -> UInt16
     {
-        // Do we need to be on a byte boundary?
-        if self.bitIndex != 0
-        {
-            return self.readToByteBoundary()
-        }
-        let c: CChar = CChar(self.currentByte)
-        self.incrementByteIndex()
-        return c
-    }
-    
-    public func readChar(numBits: Int) -> UInt16
-    {
-        guard numBits < 17 else {
+        guard numBits > 0 && numBits < 17 else {
             return 0xFFFF
         }
-        if numBits < 8
+        var accum: UInt16 = 0
+        for _ in 0..<numBits
         {
-            return UInt16(self.readChar())
+            accum = accum << 1
+            if self.readBoolean() == true
+            {
+                accum += 1
+            }
         }
-        // Still have the problem where we want > 8 bits but the bitIndex is not on a Byte boundary!
-        let endIndex = self.bitIndex! + numBits
-        var mask: UInt16 = 0
-        for i in self.bitIndex!..<endIndex
-        {
-            let n: UInt16 = (0x01 << UInt16(i))
-            mask = mask | n
-        }
-        let firstByte: UInt16 = UInt16(self.currentByte)
-        self.incrementByteIndex()
-        let secondByte: UInt16 = UInt16(self.currentByte)
-        self.incrementByteIndex()
-        let value: UInt16 = UInt16(firstByte << 8) | UInt16(secondByte)
-        return value & mask
+        return accum
     }
     
     public func readShort() -> UInt16
     {
-        let highByte: UInt16 = UInt16(self.currentByte)
-        self.incrementByteIndex()
-        let lowByte: UInt16 = UInt16(self.currentByte)
-        self.incrementByteIndex()
+        let highByte: UInt16 = self.readChar()
+        let lowByte: UInt16 = self.readChar()
         return (highByte << 8) | lowByte
     }
     
     public func readInt() -> UInt32
     {
-        let firstByte: UInt32 = UInt32(self.currentByte)
-        self.incrementByteIndex()
-        let secondByte: UInt32 = UInt32(self.currentByte)
-        self.incrementByteIndex()
-        let thirdByte: UInt32 = UInt32(self.currentByte)
-        self.incrementByteIndex()
-        let fourthByte: UInt32 = UInt32(self.currentByte)
-        self.incrementByteIndex()
-        return UInt32(firstByte << 24) | UInt32(secondByte << 16) | UInt32(thirdByte << 8) | UInt32(fourthByte)
+        let firstByte: UInt16 = self.readChar()
+        let secondByte: UInt16 = self.readChar()
+        let thirdByte: UInt16 = self.readChar()
+        let fourthByte: UInt16 = self.readChar()
+        let p1: UInt16 = UInt16(firstByte << 8) + UInt16(secondByte)
+        let p2: UInt16 = UInt16(thirdByte << 8) + UInt16(fourthByte)
+        let retVal: UInt32 = UInt32(UInt32(p1) << 16) + UInt32(p2)
+        return retVal
     }
     
     public func readLong() -> UInt64
     {
-        let firstByte: UInt64 = UInt64(self.currentByte)
-        self.incrementByteIndex()
-        let secondByte: UInt64 = UInt64(self.currentByte)
-        self.incrementByteIndex()
-        let thirdByte: UInt64 = UInt64(self.currentByte)
-        self.incrementByteIndex()
-        let fourthByte: UInt64 = UInt64(self.currentByte)
-        self.incrementByteIndex()
-        let fifthByte: UInt64 = UInt64(self.currentByte)
-        self.incrementByteIndex()
-        let sixthByte: UInt64 = UInt64(self.currentByte)
-        self.incrementByteIndex()
-        let seventhByte: UInt64 = UInt64(self.currentByte)
-        self.incrementByteIndex()
-        let eighthByte: UInt64 = UInt64(self.currentByte)
-        self.incrementByteIndex()
-        var retVal: UInt64 = UInt64(firstByte << 56) | UInt64(secondByte << 48)
-        retVal = retVal | UInt64(thirdByte << 40) | UInt64(fourthByte  << 32)
-        retVal = retVal | UInt64(fifthByte << 24) | UInt64(sixthByte << 16)
-        retVal = retVal | UInt64(seventhByte << 8) | UInt64(eighthByte)
+        let firstByte: UInt16 = self.readChar()
+        let secondByte: UInt16 = self.readChar()
+        let thirdByte: UInt16 = self.readChar()
+        let fourthByte: UInt16 = self.readChar()
+        let fifthByte: UInt16 = self.readChar()
+        let sixthByte: UInt16 = self.readChar()
+        let seventhByte: UInt16 = self.readChar()
+        let eighthByte: UInt16 = self.readChar()
+        let p1: UInt16 = UInt16(firstByte << 8) + UInt16(secondByte)
+        let p2: UInt16 = UInt16(thirdByte << 8) + UInt16(fourthByte)
+        let p3: UInt16 = UInt16(fifthByte << 8) + UInt16(sixthByte)
+        let p4: UInt16 = UInt16(seventhByte << 8) + UInt16(eighthByte)
+        let b1: UInt32 = UInt32(UInt32(p1) << 16) + UInt32(p2)
+        let b2: UInt32 = UInt32(UInt32(p3) << 16) + UInt32(p4)
+        let retVal: UInt64 = UInt64(UInt64(b1) << 32) + UInt64(b2)
         return retVal
     }
     
